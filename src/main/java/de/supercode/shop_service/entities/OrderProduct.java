@@ -2,7 +2,7 @@ package de.supercode.shop_service.entities;
 
 import jakarta.persistence.*;
 @Entity
-public class Order_Product {
+public class OrderProduct {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -14,10 +14,10 @@ public class Order_Product {
     private Product product;
     private double total_amount ;
 
-    public Order_Product(){
+    public OrderProduct(){
 
     }
-    public Order_Product(Order order, Product product, double total_amount) {
+    public OrderProduct(Order order, Product product, double total_amount) {
         this.order = order;
         this.product = product;
         this.total_amount = total_amount;

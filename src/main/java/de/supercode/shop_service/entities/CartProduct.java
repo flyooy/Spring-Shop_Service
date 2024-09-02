@@ -3,7 +3,7 @@ package de.supercode.shop_service.entities;
 import jakarta.persistence.*;
 
 @Entity
-public class Cart_Product {
+public class CartProduct {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -17,11 +17,11 @@ public class Cart_Product {
     private Integer quantity;//count products in Order
 
 
-    public Cart_Product() {
+    public CartProduct() {
 
     }
 
-    public Cart_Product(Cart cart, Product product, Integer quantity) {
+    public CartProduct(Cart cart, Product product, Integer quantity) {
         this.cart = cart;
         this.product = product;
         this.quantity = quantity;

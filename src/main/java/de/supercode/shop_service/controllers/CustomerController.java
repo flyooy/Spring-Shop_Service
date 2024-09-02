@@ -34,6 +34,7 @@ public class CustomerController {
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).build(); //  400 Bad Request
         }
     }
+
     @PutMapping("/{id}")
     public ResponseEntity<Customer> updateCustomer( @PathVariable Long id, @RequestBody Customer customer) {
         try {
