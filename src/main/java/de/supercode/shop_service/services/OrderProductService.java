@@ -22,39 +22,47 @@ public class OrderProductService {
     @Autowired
     public ProductRepository productRepository;
 
-    public OrderProduct createOrderProduct(Long orderId, Long productId, double totalAmount) {
+    public OrderProduct createOrderProduct(OrderProduct orderProduct) {
+        Order order = orderRepository.findById(orderProduct.getOrder().getId())
+                .orElseThrow(() -> new EntityNotFoundException("Order with ID " + orderProduct.getOrder().getId() + " not found."));
 
-        Order order = orderRepository.findById(orderId)
-                .orElseThrow(() -> new EntityNotFoundException("Order with ID " + orderId + " not found."));
+        Product product = productRepository.findById(orderProduct.getProduct().getId())
+                .orElseThrow(() -> new EntityNotFoundException("Product with ID " + orderProduct.getProduct().getId() + " not found."));
 
-
-        Product product = productRepository.findById(productId)
-                .orElseThrow(() -> new EntityNotFoundException("Product with ID " + productId + " not found."));
-
-
-        OrderProduct orderProduct = new OrderProduct();
         orderProduct.setOrder(order);
         orderProduct.setProduct(product);
-        orderProduct.setTotalAmount(totalAmount);
-
 
         return orderProductRepository.save(orderProduct);
     }
-
     public OrderProduct getOrderProduct(Long orderProductId) {
         return orderProductRepository.findById(orderProductId).orElseThrow();
     }
     public List<OrderProduct> getAllOrderProducts() {
         return orderProductRepository.findAll();
     }
-    public OrderProduct updateOrderProduct(Long orderProductId, Long productId, Long orderId) {
-        OrderProduct orderProduct = getOrderProduct(orderProductId);
-        Product product = productRepository.findById(productId).orElseThrow(() -> new EntityNotFoundException("Product with ID " + productId + " not found."));
-        orderProduct.setProduct(product);
-        Order order = orderRepository.findById(orderId).orElseThrow(() -> new EntityNotFoundException("Order with ID " + orderId + " not found."));
-        orderProduct.setOrder(order);
-        return orderProductRepository.save(orderProduct);
+    public OrderProduct updateOrderProduct(Long orderProductId, OrderProduct updatedOrderProduct) {
+        OrderProduct existingOrderProduct = getOrderProduct(orderProductId);
+
+
+        if (updatedOrderProduct.getOrder() != null) {
+            Order order = orderRepository.findById(updatedOrderProduct.getOrder().getId())
+                    .orElseThrow(() -> new EntityNotFoundException("Order with ID " + updatedOrderProduct.getOrder().getId() + " not found."));
+            existingOrderProduct.setOrder(order);
+        }
+
+        if (updatedOrderProduct.getProduct() != null) {
+            Product product = productRepository.findById(updatedOrderProduct.getProduct().getId())
+                    .orElseThrow(() -> new EntityNotFoundException("Product with ID " + updatedOrderProduct.getProduct().getId() + " not found."));
+            existingOrderProduct.setProduct(product);
+        }
+
+        if (updatedOrderProduct.getTotalAmount() >= 0) {
+            existingOrderProduct.setTotalAmount(updatedOrderProduct.getTotalAmount());
+        }
+
+        return orderProductRepository.save(existingOrderProduct);
     }
+
 
     public void deleteOrderProduct(Long orderProductId) {
         orderProductRepository.deleteById(orderProductId);

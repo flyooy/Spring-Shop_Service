@@ -18,16 +18,15 @@ public class OrderService {
     @Autowired
     private CustomerRepository customerRepository;
 
-    public Order createOrder(Long customerId, String status, LocalDate orderDate) {
+    public Order createOrder(Order order) {
 
-        Customer customer = customerRepository.findById(customerId)
-                .orElseThrow(() -> new EntityNotFoundException("Customer with ID " + customerId + " not found."));
-        Order order = new Order();
+        Customer customer = customerRepository.findById(order.getCustomer().getId())
+                .orElseThrow(() -> new EntityNotFoundException("Customer with ID " + order.getCustomer().getId() + " not found."));
         order.setCustomer(customer);
-        order.setStatus(status);
-        order.setOrderDate(orderDate);
+
         return orderRepository.save(order);
     }
+
 
     public Order getOrder(Long orderId) {
         return orderRepository.findById(orderId)
@@ -43,12 +42,15 @@ public class OrderService {
             orderRepository.deleteById(orderId);
         }
     }
+    public Order updateOrder(Long orderId, Order order) {
 
-    public Order updateOrder(Long orderId, Long customerId) {
-        Order order = getOrder(orderId);
-        Customer customer = customerRepository.findById(customerId)
-                .orElseThrow(() -> new EntityNotFoundException("Customer with ID " + customerId + " not found."));
-        order.setCustomer(customer);
-        return orderRepository.save(order);
-    }
+    Order existingOrder = orderRepository.findById(orderId)
+            .orElseThrow(() -> new EntityNotFoundException("Order with ID " + orderId + " not found."));
+
+        existingOrder.setCustomer(order.getCustomer());
+        existingOrder.setOrderDate(order.getOrderDate());
+        existingOrder.setStatus(order.getStatus());
+
+        return orderRepository.save(existingOrder);
+}
 }
