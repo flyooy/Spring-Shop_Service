@@ -12,15 +12,15 @@ public class OrderProduct {
     @ManyToOne
     @JoinColumn(name = "product_id")
     private Product product;
-    private double total_amount ;
+    private double totalAmount ;
 
     public OrderProduct(){
 
     }
-    public OrderProduct(Order order, Product product, double total_amount) {
+    public OrderProduct(Order order, Product product, double totalAmount) {
         this.order = order;
         this.product = product;
-        this.total_amount = total_amount;
+        this.totalAmount = totalAmount;
     }
 
     public Long getId() {
@@ -49,11 +49,11 @@ public class OrderProduct {
 
 
 
-    public double getTotal_amount() {
-        return total_amount;
+    public double getTotalAmount() {
+        return totalAmount;
     }
 
-    public void setTotal_amount(double total_amount) {
-        this.total_amount = total_amount;
+    public void setTotalAmount(double totalAmount) {
+        this.totalAmount = totalAmount;
     }
 }

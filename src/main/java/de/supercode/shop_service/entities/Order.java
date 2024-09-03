@@ -13,12 +13,12 @@ public class Order {
     @JoinColumn(name = "customer_id")
     private Customer customer;
     private String status;
-    private LocalDate order_date;
+    private LocalDate orderDate;
 
-    public Order(Customer customer, String status, LocalDate order_date) {
+    public Order(Customer customer, String status, LocalDate orderDate) {
         this.customer = customer;
         this.status = status;
-        this.order_date = order_date;
+        this.orderDate = orderDate;
     }
 
 
@@ -50,11 +50,11 @@ public class Order {
         this.status = status;
     }
 
-    public LocalDate getOrder_date() {
-        return order_date;
+    public LocalDate getOrderDate() {
+        return orderDate;
     }
 
-    public void setOrder_date(LocalDate order_date) {
-        this.order_date = order_date;
+    public void setOrderDate(LocalDate orderDate) {
+        this.orderDate = orderDate;
     }
 }

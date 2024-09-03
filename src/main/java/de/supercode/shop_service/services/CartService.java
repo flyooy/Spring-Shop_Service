@@ -8,6 +8,7 @@ import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -16,6 +17,10 @@ public class CartService {
     private  CartRepository cartRepository;
     @Autowired
     private CustomerRepository customerRepository;
+
+    public List<Cart> getCarts() {
+        return cartRepository.findAll();
+    }
 
     public Cart getCart(Long cartId) {
         return cartRepository.findById(cartId)
@@ -28,7 +33,7 @@ public class CartService {
         if (customerOptional.isPresent()) {
             Customer customer = customerOptional.get();
 
-            // Создаем новую корзину и связываем с клиентом
+
             Cart cart = new Cart();
             cart.setCustomer(customer);
 
