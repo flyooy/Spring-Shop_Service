@@ -1,6 +1,9 @@
 package de.supercode.shop_service.entities;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Past;
 
 import java.time.LocalDate;
 
@@ -12,9 +15,13 @@ public class Customer {
     @ManyToOne
     @JoinColumn(name = "adresse_id")
     private Adresse adresse;
+    @NotBlank(message = "First name cannot be blank")
     private String firstName;
+    @NotBlank(message = "Last name cannot be blank")
     private String lastName;
+    @Email(message = "Email should be valid")
     private String email;
+    @Past(message = "Birth date must be in the past")
     private LocalDate birthDate;
 
     public Customer(Adresse adresse, String firstName, String lastName, String email, LocalDate birthDate) {

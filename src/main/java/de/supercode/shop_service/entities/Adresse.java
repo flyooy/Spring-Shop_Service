@@ -1,6 +1,7 @@
 package de.supercode.shop_service.entities;
 
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotBlank;
 
 @Entity
 public class Adresse {
@@ -8,6 +9,7 @@ public class Adresse {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "adresse_id")
     private Long adresseId;
+    @NotBlank(message = "Street is mandatory")
     private String street;
     private String hauseNumber;
     private String city;
