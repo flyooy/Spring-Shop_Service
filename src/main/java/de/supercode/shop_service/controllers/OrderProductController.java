@@ -23,6 +23,8 @@ public class OrderProductController {
     public ResponseEntity<OrderProduct> createOrderProduct(@RequestBody OrderProduct orderProduct) {
         try {
             OrderProduct createdOrderProduct = orderProductService.createOrderProduct(orderProduct);
+            createdOrderProduct.getAmountTotal();
+
             return new ResponseEntity<>(createdOrderProduct, HttpStatus.CREATED);
         } catch (EntityNotFoundException e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -33,7 +35,12 @@ public class OrderProductController {
     @GetMapping
     public ResponseEntity<List<OrderProduct>> getAllOrderProducts() {
         List<OrderProduct> orderProducts = orderProductService.getAllOrderProducts();
-        return new ResponseEntity<>(orderProducts, HttpStatus.OK);
+
+        orderProducts.forEach(orderProduct -> {
+            orderProduct.getAmountTotal();
+        });
+
+        return ResponseEntity.ok(orderProducts);
     }
 
 

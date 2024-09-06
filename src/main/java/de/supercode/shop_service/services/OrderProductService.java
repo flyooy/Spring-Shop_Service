@@ -29,9 +29,16 @@ public class OrderProductService {
         Product product = productRepository.findById(orderProduct.getProduct().getId())
                 .orElseThrow(() -> new EntityNotFoundException("Product with ID " + orderProduct.getProduct().getId() + " not found."));
 
+
+        if (product.getQuantity() < orderProduct.getQuantity()) {
+            throw new IllegalArgumentException("Insufficient stock for product ID " + product.getId()+ "-->");
+        }
+
         orderProduct.setOrder(order);
         orderProduct.setProduct(product);
 
+        product.setQuantity(product.getQuantity() - orderProduct.getQuantity());
+        productRepository.save(product);
         return orderProductRepository.save(orderProduct);
     }
     public OrderProduct getOrderProduct(Long orderProductId) {
@@ -56,9 +63,7 @@ public class OrderProductService {
             existingOrderProduct.setProduct(product);
         }
 
-        if (updatedOrderProduct.getTotalAmount() >= 0) {
-            existingOrderProduct.setTotalAmount(updatedOrderProduct.getTotalAmount());
-        }
+
 
         return orderProductRepository.save(existingOrderProduct);
     }
